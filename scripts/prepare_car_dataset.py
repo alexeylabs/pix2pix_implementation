@@ -15,13 +15,13 @@ MASK_PATH = 'cars\\train_masks\\'
 SAVE_PATH = 'cars\\results\\'
 
 file_names = glob.glob(PHOTOS_PATH+'*.jpg')
-file_names = [fname.split('.')[0].split('\\')[-1] for fname in file_names]
+file_names = [f_name.split('.')[0].split('\\')[-1] for f_name in file_names]
 
-for fname in tqdm(file_names):
-    mask = Image.open(MASK_PATH+fname+'_mask.gif')
+for f_name in tqdm(file_names):
+    mask = Image.open(MASK_PATH+f_name+'_mask.gif')
     mask = np.array(mask)
 
-    img = Image.open(PHOTOS_PATH+fname+'.jpg')
+    img = Image.open(PHOTOS_PATH+f_name+'.jpg')
     img = np.array(img)
     img = np.where(mask[:, :, None] == 1, img, 255)
 
@@ -36,4 +36,4 @@ for fname in tqdm(file_names):
 
     res = np.hstack([edges, img])
 
-    Image.fromarray(res.astype(np.uint8)).save(SAVE_PATH+fname+'.jpg')
+    Image.fromarray(res.astype(np.uint8)).save(SAVE_PATH+f_name+'.png')

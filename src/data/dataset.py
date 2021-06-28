@@ -10,7 +10,7 @@ from config import *
 
 class ImageDataset(Dataset):
     def __init__(self, images_path, use_augmentation=True):
-        self.filenames = glob.glob(images_path + '*.jpg')
+        self.filenames = glob.glob(images_path + '*.png')
         self.use_augmentation = use_augmentation
 
     def __len__(self):
@@ -30,6 +30,7 @@ class ImageDataset(Dataset):
 
         if self.use_augmentation:
             # random mirroring and jitter
+
             if random.random() > 0.5:
                 image = TF.vflip(image)
                 target = TF.vflip(target)
