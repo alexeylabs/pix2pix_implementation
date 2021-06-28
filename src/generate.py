@@ -11,14 +11,14 @@ def generate_images_from_doodles():
     generator = torch.load(RESULTS_PATH+'best_generator.pt')
     generator.eval()
 
-    doodles_names = glob.glob(DOODLES_PATH+'*.jpg')
+    doodles_names = glob.glob(DOODLES_PATH+'*.png')
     with torch.no_grad():
         for doodle_name in doodles_names:
             doodle = np.array(Image.open(doodle_name))
             doodle = transforms.ToTensor()(doodle)
             doodle = TF.resize(doodle, (IMAGE_SIZE, IMAGE_SIZE))
 
-            image = generator(doodle[None, ...].to(DEVICE))[0]
+            image = generator(doodle[None, :3, :, :].to(DEVICE))[0]
             image = transforms.ToPILImage()(image.cpu()).convert("RGB")
 
             f_name = 'image_from_' + doodle_name.split('\\')[-1]
